@@ -6,7 +6,7 @@
         <el-skeleton style="width: 100%" animated :rows="5" />
       </div>
       
-      <div v-else-if="recommendedNovels.length > 0" class="relative">
+      <div v-else-if="recommendedNovels && recommendedNovels.length > 0" class="relative">
         <el-carousel :interval="4000" type="card" height="300px">
           <el-carousel-item v-for="novel in recommendedNovels" :key="novel.id">
             <router-link :to="`/novel/${novel.id}`" class="block h-full">
@@ -71,7 +71,7 @@
         <el-skeleton style="width: 100%" animated :rows="3" />
       </div>
       
-      <div v-else-if="newNovels.length > 0" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+      <div v-else-if="newNovels && newNovels.length > 0" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
         <router-link 
           v-for="novel in newNovels.slice(0, 5)" 
           :key="novel.id"
@@ -109,7 +109,7 @@
         <el-skeleton style="width: 100%" animated :rows="3" />
       </div>
       
-      <div v-else-if="hotNovels.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div v-else-if="hotNovels && hotNovels.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <router-link 
           v-for="(novel, index) in hotNovels.slice(0, 6)" 
           :key="novel.id"

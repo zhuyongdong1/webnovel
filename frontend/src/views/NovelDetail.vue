@@ -27,14 +27,13 @@
             </div>
             
             <div class="flex space-x-2 mb-6">
-              <router-link 
-                v-for="category in novel.categories" 
-                :key="category.id"
-                :to="`/category/${category.id}`"
+              <span 
+                v-for="category in categoriesArray" 
+                :key="category"
                 class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200"
               >
-                {{ category.name }}
-              </router-link>
+                {{ category }}
+              </span>
             </div>
             
             <div class="w-full">
@@ -115,6 +114,11 @@ export default {
       return readingProgress.value && readingProgress.value.hasRecord
     })
     
+    const categoriesArray = computed(() => {
+      if (!novel.value || !novel.value.categories) return []
+      return novel.value.categories.split(',').map(cat => cat.trim()).filter(cat => cat)
+    })
+    
     const readingLink = computed(() => {
       if (hasReadingProgress.value) {
         return `/read/${readingProgress.value.record.chapter_id}`
@@ -153,7 +157,8 @@ export default {
       hasReadingProgress,
       readingLink,
       formatDate,
-      config
+      config,
+      categoriesArray
     }
   }
 }

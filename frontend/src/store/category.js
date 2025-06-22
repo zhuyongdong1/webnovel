@@ -22,15 +22,17 @@ export const useCategoryStore = defineStore('category', {
         const response = await api.categories.getAll()
         console.log('分类列表响应:', response)
         if (response.data && response.data.success) {
-        this.categories = response.data.data.categories
+          this.categories = response.data.data || []
           console.log('分类列表更新成功:', this.categories)
         } else {
           console.error('分类列表响应格式错误:', response)
           this.error = '获取分类列表失败'
+          this.categories = []
         }
       } catch (error) {
         console.error('获取分类列表失败:', error)
         this.error = error.response?.data?.message || '获取分类列表失败'
+        this.categories = []
       } finally {
         this.loading = false
       }

@@ -23,10 +23,11 @@ export const useNovelStore = defineStore('novel', {
       try {
         const response = await api.novels.getRecommended()
         console.log('小说请求结果', response.data)
-        this.recommendedNovels = response.data.data.novels
+        this.recommendedNovels = response.data.data || []
       } catch (error) {
         this.error = error.response?.data?.message || '获取推荐小说失败'
         console.error('获取推荐小说失败:', error)
+        this.recommendedNovels = []
       } finally {
         this.loading = false
       }
@@ -37,10 +38,11 @@ export const useNovelStore = defineStore('novel', {
       this.loading = true
       try {
         const response = await api.novels.getNewNovels()
-        this.newNovels = response.data.data.novels
+        this.newNovels = response.data.data || []
       } catch (error) {
         this.error = error.response?.data?.message || '获取新书榜失败'
         console.error('获取新书榜失败:', error)
+        this.newNovels = []
       } finally {
         this.loading = false
       }
@@ -51,10 +53,11 @@ export const useNovelStore = defineStore('novel', {
       this.loading = true
       try {
         const response = await api.novels.getHotNovels()
-        this.hotNovels = response.data.data.novels
+        this.hotNovels = response.data.data || []
       } catch (error) {
         this.error = error.response?.data?.message || '获取热门榜失败'
         console.error('获取热门榜失败:', error)
+        this.hotNovels = []
       } finally {
         this.loading = false
       }
@@ -67,12 +70,19 @@ export const useNovelStore = defineStore('novel', {
       this.novelChapters = []
       
       try {
-        const response = await api.novels.getById(id)
-        this.novelDetail = response.data.data.novel
-        this.novelChapters = response.data.data.chapters
+        // 并行获取小说详情和章节列表
+        const [novelResponse, chaptersResponse] = await Promise.all([
+          api.novels.getById(id),
+          api.chapters.getByNovelId(id)
+        ])
+        
+        this.novelDetail = novelResponse.data.data
+        this.novelChapters = chaptersResponse.data.data.chapters || []
       } catch (error) {
         this.error = error.response?.data?.message || '获取小说详情失败'
         console.error('获取小说详情失败:', error)
+        this.novelDetail = null
+        this.novelChapters = []
       } finally {
         this.loading = false
       }
