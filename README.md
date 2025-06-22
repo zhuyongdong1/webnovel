@@ -64,7 +64,7 @@ novel-website/
 
 ### 1. 克隆项目
 ```bash
-git clone https://github.com/your-username/novel-website.git
+git clone https://https://github.com/zhuyongdong1/webnovel
 cd novel-website
 ```
 
