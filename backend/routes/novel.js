@@ -8,17 +8,17 @@ const { uploadCover } = require('../middlewares/upload');
 // 获取小说列表
 router.get('/', novelController.getAllNovels);
 
-// 获取小说详情
-router.get('/:id', novelController.getNovelById);
-
-// 获取推荐小说
+// 获取推荐小说 (必须在 /:id 之前)
 router.get('/recommended/list', novelController.getRecommendedNovels);
 
-// 获取新书榜
+// 获取新书榜 (必须在 /:id 之前)
 router.get('/ranking/new', novelController.getNewNovels);
 
-// 获取热门榜
+// 获取热门榜 (必须在 /:id 之前)
 router.get('/ranking/hot', novelController.getHotNovels);
+
+// 获取小说详情 (放在最后，避免路由冲突)
+router.get('/:id', novelController.getNovelById);
 
 // 按分类获取小说
 router.get('/category/:categoryId', novelController.getNovelsByCategory);

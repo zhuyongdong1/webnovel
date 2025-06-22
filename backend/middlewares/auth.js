@@ -108,6 +108,7 @@ const requireAuth = (req, res, next) => {
 };
 
 module.exports = {
+  verifyToken: exports.verifyToken,
   guestMiddleware,
   authMiddleware,
   requireAuth

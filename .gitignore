@@ -169,6 +169,14 @@ backend/uploads/**/
 # Build files
 frontend/dist/
 backend/dist/
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Distribution archives
+frontend/dist*.zip
+backend/dist*.tar.gz
 
 # PM2 files
 ecosystem.config.js 

@@ -315,6 +315,7 @@ exports.deleteNovel = async (req, res) => {
 exports.getRecommendedNovels = async (req, res) => {
   try {
     const { limit = 6 } = req.query;
+    const safeLimit = parseInt(limit) || 6;
     const [novels] = await db.query(`
       SELECT n.*, GROUP_CONCAT(c.name) as categories
       FROM novels n
@@ -322,8 +323,8 @@ exports.getRecommendedNovels = async (req, res) => {
       LEFT JOIN categories c ON nc.category_id = c.id
       GROUP BY n.id
       ORDER BY n.view_count DESC
-      LIMIT ?
-    `, [parseInt(limit)]);
+      LIMIT ${safeLimit}
+    `);
 
     res.json({
       success: true,
@@ -342,6 +343,7 @@ exports.getRecommendedNovels = async (req, res) => {
 exports.getNewNovels = async (req, res) => {
   try {
     const { limit = 10 } = req.query;
+    const safeLimit = parseInt(limit) || 10;
     const [novels] = await db.query(`
       SELECT n.*, GROUP_CONCAT(c.name) as categories
       FROM novels n
@@ -349,8 +351,8 @@ exports.getNewNovels = async (req, res) => {
       LEFT JOIN categories c ON nc.category_id = c.id
       GROUP BY n.id
       ORDER BY n.created_at DESC
-      LIMIT ?
-    `, [parseInt(limit)]);
+      LIMIT ${safeLimit}
+    `);
 
     res.json({
       success: true,
@@ -369,6 +371,7 @@ exports.getNewNovels = async (req, res) => {
 exports.getHotNovels = async (req, res) => {
   try {
     const { limit = 10 } = req.query;
+    const safeLimit = parseInt(limit) || 10;
     const [novels] = await db.query(`
       SELECT n.*, GROUP_CONCAT(c.name) as categories
       FROM novels n
@@ -376,8 +379,8 @@ exports.getHotNovels = async (req, res) => {
       LEFT JOIN categories c ON nc.category_id = c.id
       GROUP BY n.id
       ORDER BY n.view_count DESC
-      LIMIT ?
-    `, [parseInt(limit)]);
+      LIMIT ${safeLimit}
+    `);
 
     res.json({
       success: true,

@@ -25,11 +25,8 @@ exports.login = async (req, res) => {
       });
     }
     
-    // 验证密码
-    // 注意：在实际应用中，数据库中的密码应该是哈希过的
-    // 这里为了简化示例，直接比较明文密码
-    // 在生产环境中应该使用 bcrypt.compare(password, admin.password)
-    const isMatch = password === admin.password;
+    // 验证密码 - 使用 bcrypt 进行安全的密码比较
+    const isMatch = await bcrypt.compare(password, admin.password);
     
     if (!isMatch) {
       return res.status(401).json({
@@ -103,9 +100,8 @@ exports.changePassword = async (req, res) => {
     
     const admin = await Admin.findByPk(req.admin.id);
     
-    // 验证当前密码
-    // 同样，这里简化处理，实际应使用 bcrypt.compare
-    const isMatch = currentPassword === admin.password;
+    // 验证当前密码 - 使用 bcrypt 进行安全的密码比较
+    const isMatch = await bcrypt.compare(currentPassword, admin.password);
     
     if (!isMatch) {
       return res.status(401).json({
@@ -114,10 +110,9 @@ exports.changePassword = async (req, res) => {
       });
     }
     
-    // 更新密码
-    // 实际应用中应该对新密码进行哈希处理
-    // const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await admin.update({ password: newPassword });
+    // 更新密码 - 对新密码进行哈希处理
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await admin.update({ password: hashedPassword });
     
     res.status(200).json({
       success: true,
